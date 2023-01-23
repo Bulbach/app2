@@ -3,6 +3,7 @@ package com.alexIntervale1.app2;
 import com.alexIntervale1.app2.model.ResponseMessage;
 import com.alexIntervale1.app2.repository.ResponseRepo;
 import com.alexIntervale1.app2.worker.Worker;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -14,6 +15,7 @@ import java.time.LocalDate;
 
 @SpringBootApplication
 @EnableJms
+@Slf4j
 public class App2Application {
 
     public static void main(String[] args) {
@@ -21,12 +23,14 @@ public class App2Application {
 
         Runnable worker = context.getBean("worker", Worker.class);
         Thread thread = new Thread(worker, "Worker");
+        log.info("Старт потока "+ worker);
         thread.start();
 
     }
 
     @Bean
-    public CommandLineRunner testAppBook(ResponseRepo responseRepo) {
+    public CommandLineRunner testAppGiss(ResponseRepo responseRepo) {
+        log.info("Наполнение базу данных тестовыми данными ");
         return args -> {
             responseRepo.save(
                     ResponseMessage.builder()
