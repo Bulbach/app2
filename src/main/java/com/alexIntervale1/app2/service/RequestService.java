@@ -1,6 +1,7 @@
 package com.alexIntervale1.app2.service;
 
 import com.alexIntervale1.app2.dto.RequestDto;
+import com.alexIntervale1.app2.exception.CustomAppException;
 import com.alexIntervale1.app2.mapper.RequestMapper;
 import com.alexIntervale1.app2.model.RequestMessage;
 import com.alexIntervale1.app2.repository.RequestRepo;
@@ -30,15 +31,26 @@ public class RequestService {
     private final Worker worker;
 
     @JmsListener(destination = "individual.queue")
-    public void receiveMessage(final Message message) throws JMSException {
+    public void receiveMessage(final Message message) throws CustomAppException {
 
         log.info("Received message " + message);
-        String numberRequest = message.getJMSCorrelationID();
+        String numberRequest = null;
+        try {
+            numberRequest = message.getJMSCorrelationID();
+        } catch (JMSException e) {
+            log.warn("Проблемы при получении порядкового номера сообщения , метод receiveMessage ", e);
+            throw new CustomAppException(e);
+        }
         log.info(numberRequest);
 
         String json = "";
         TextMessage textMessage = (TextMessage) message;
-        json = textMessage.getText();
+        try {
+            json = textMessage.getText();
+        } catch (JMSException e) {
+            log.warn("Проблемы при получении текста ответа, метод receiveMessage ", e);
+            throw new CustomAppException(e);
+        }
 
         RequestDto requestDto = gson.fromJson(json, RequestDto.class);
         log.info(String.valueOf(requestDto));

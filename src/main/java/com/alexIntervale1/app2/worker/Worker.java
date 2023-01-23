@@ -1,6 +1,7 @@
 package com.alexIntervale1.app2.worker;
 
 import com.alexIntervale1.app2.dto.ResponseDto;
+import com.alexIntervale1.app2.exception.CustomAppException;
 import com.alexIntervale1.app2.mapper.ResponseMapper;
 import com.alexIntervale1.app2.model.RequestMessage;
 import com.alexIntervale1.app2.model.ResponseMessage;
@@ -34,12 +35,12 @@ public class Worker implements Runnable {
             while (true) {
                 this.findIndividualNumber();
             }
-        } catch (MessageNotWriteableException | InterruptedException e) {
-            log.warn("Ошибка при вычитке данных из таблицы запросов, метод run() " + e.getMessage());
+        } catch (CustomAppException | InterruptedException e) {
+            log.warn("Ошибка при вычитке данных из таблицы запросов, метод run() " + e);
         }
     }
 
-    private void findIndividualNumber() throws InterruptedException, MessageNotWriteableException {
+    private void findIndividualNumber() throws InterruptedException, CustomAppException {
         RequestMessage message = repo.findFirstByProgressControlIsLike("in work");
         if (message != null) {
             message.setProgressControl("completed");
@@ -50,26 +51,26 @@ public class Worker implements Runnable {
         Thread.sleep(1000);
     }
 
-    private void findStuff(long number, String correlationId) throws MessageNotWriteableException {
+    private void findStuff(long number, String correlationId) throws CustomAppException {
         ResponseMessage responseMessage = responseRepo.findByIndividualNumber(number);
         if (responseMessage != null) {
             log.info("Сообщение ответа, по индивидуальному номеру, из базы данных  " + responseMessage);
             ResponseDto dto = mapper.toDto(responseMessage);
             String json = gson.toJson(dto);
-            try {
-                ActiveMQTextMessage textMessage = getMessage(correlationId, json);
-                jmsTemplate.convertAndSend("outindividual.queue", textMessage);
-            } catch (MessageNotWriteableException e) {
-                log.warn("Проблема при отправке сообщения в очередь, метод findStuff ", e);
-                throw new MessageNotWriteableException("Проблема при отправки сообщения", e.getMessage());
-            }
+            ActiveMQTextMessage textMessage = getMessage(correlationId, json);
+            jmsTemplate.convertAndSend("outindividual.queue", textMessage);
         }
     }
 
-    private ActiveMQTextMessage getMessage(String correlationId, String json) throws MessageNotWriteableException {
+    private ActiveMQTextMessage getMessage(String correlationId, String json) throws CustomAppException {
         ActiveMQTextMessage textMessage = new ActiveMQTextMessage();
         textMessage.setCorrelationId(correlationId);
-        textMessage.setText(json);
+        try {
+            textMessage.setText(json);
+        } catch (MessageNotWriteableException e) {
+            log.warn("Проблема при добавлении сообщения в textMessage" + json);
+            throw new CustomAppException(e);
+        }
         return textMessage;
     }
 }
