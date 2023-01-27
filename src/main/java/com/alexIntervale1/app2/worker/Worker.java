@@ -33,14 +33,14 @@ public class Worker implements Runnable {
     public void run() {
         try {
             while (true) {
-                this.findIndividualNumber();
+                this.findPersonalNumber();
             }
         } catch (CustomAppException | InterruptedException e) {
             log.warn("Ошибка при вычитке данных из таблицы запросов, метод run() " + e);
         }
     }
 
-    private void findIndividualNumber() throws InterruptedException, CustomAppException {
+    private void findPersonalNumber() throws InterruptedException, CustomAppException {
         RequestMessage message = repo.findFirstByProgressControlIsLike("in work");
         if (message != null) {
             message.setProgressControl("completed");
@@ -52,7 +52,7 @@ public class Worker implements Runnable {
     }
 
     private void findStuff(long number, String correlationId) throws CustomAppException {
-        ResponseMessage responseMessage = responseRepo.findByIndividualNumber(number);
+        ResponseMessage responseMessage = responseRepo.findByPersonalNumber(number);
         if (responseMessage != null) {
             log.info("Сообщение ответа, по индивидуальному номеру, из базы данных  " + responseMessage);
             ResponseDto dto = mapper.toDto(responseMessage);

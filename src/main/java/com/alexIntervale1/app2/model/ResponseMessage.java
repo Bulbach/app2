@@ -1,16 +1,12 @@
 package com.alexIntervale1.app2.model;
 
 import lombok.*;
-import org.hibernate.Hibernate;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.Objects;
 
-@Getter
-@Setter
-@ToString
+@Data
 @RequiredArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -21,8 +17,8 @@ public class ResponseMessage {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
-    @Column(name = "individualNumber")
-    private Long individualNumber;
+    @Column(name = "personalNumber")
+    private Long personalNumber;
     @Column(name = "accrualAmount")
     private double accrualAmount;
     @Column(name = "payableAmount")
@@ -37,13 +33,7 @@ public class ResponseMessage {
     @Column(name = "correlationID")
     private String correlationID;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        ResponseMessage that = (ResponseMessage) o;
-        return individualNumber != null && Objects.equals(individualNumber, that.individualNumber);
-    }
+
 
     @Override
     public int hashCode() {

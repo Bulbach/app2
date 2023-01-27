@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ResponseRepo extends JpaRepository<ResponseMessage,Long> {
 
-    ResponseMessage findByIndividualNumber (Long aLong);
+    ResponseMessage findByPersonalNumber (Long aLong);
 }

@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class ResponseDto {
 
-    private long individualNumber;
+    private long personalNumber;
     private double accrualAmount;
     private double payableAmount;
     private long ordinanceNumber;
