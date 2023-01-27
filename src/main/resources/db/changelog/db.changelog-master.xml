@@ -1,0 +1,82 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext
+   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
+   http://www.liquibase.org/xml/ns/dbchangelog
+   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet author="Alex" id="requestMessageId">
+        <createTable tableName="request">
+            <column name="id" autoIncrement="true" startWith="6" type="java.lang.Long">
+                <constraints primaryKey="true" primaryKeyName="request_id"/>
+            </column>
+            <column name="personal_number" type="java.lang.Long"/>
+            <column name="name" type="varchar(56)"/>
+            <column name="surname" type="varchar(100)"/>
+            <column name="progress_control" type="varchar(30)"/>
+            <column name="correlationid" type="varchar(50)"/>
+        </createTable>
+
+    </changeSet>
+    <changeSet id="response" author="alex">
+        <createTable tableName="response">
+            <column name="id" autoIncrement="true" type="java.lang.Long">
+                <constraints primaryKey="true" primaryKeyName="response_id"/>
+            </column>
+            <column name="personal_number" startWith="1" type="java.lang.Long"/>
+            <column name="accrual_amount" type="double"/>
+            <column name="payable_amount" type="double"/>
+            <column name="ordinance_number" type="java.lang.Long"/>
+            <column name="date_of_the_decree" type="date"/>
+            <column name="code_article" type="double"/>
+            <column name="correlationid" type="java.lang.String"/>
+        </createTable>
+        <insert tableName="response">
+                <column name="id" value="1"/>
+                <column name="personal_number" value="123456789123"/>
+                <column name="accrual_amount" value="123.45"/>
+                <column name="payable_amount" value="125.03"/>
+                <column name="ordinance_number" value="211"/>
+                <column name="date_of_the_decree" value="2020-12-09"/>
+                <column name="code_article" value="221"/>
+        </insert>
+        <insert tableName="response">
+            <column name="id" value="2"/>
+            <column name="personal_number" value="123456789456"/>
+            <column name="accrual_amount" value="223.45"/>
+            <column name="payable_amount" value="225.03"/>
+            <column name="ordinance_number" value="215"/>
+            <column name="date_of_the_decree" value="2020-11-09"/>
+            <column name="code_article" value="223"/>
+        </insert>
+        <insert tableName="response">
+            <column name="id" value="3"/>
+            <column name="personal_number" value="123456789789"/>
+            <column name="accrual_amount" value="323.45"/>
+            <column name="payable_amount" value="325.03"/>
+            <column name="ordinance_number" value="217"/>
+            <column name="date_of_the_decree" value="2020-05-09"/>
+            <column name="code_article" value="100.1"/>
+        </insert>
+        <insert tableName="response">
+            <column name="id" value="4"/>
+            <column name="personal_number" value="234567891234"/>
+            <column name="accrual_amount" value="423.45"/>
+            <column name="payable_amount" value="425.03"/>
+            <column name="ordinance_number" value="219"/>
+            <column name="date_of_the_decree" value="2021-12-09"/>
+            <column name="code_article" value="300.2"/>
+        </insert>
+        <insert tableName="response">
+            <column name="id" value="5"/>
+            <column name="personal_number" value="234567895678"/>
+            <column name="accrual_amount" value="523.45"/>
+            <column name="payable_amount" value="525.03"/>
+            <column name="ordinance_number" value="221"/>
+            <column name="date_of_the_decree" value="2022-12-09"/>
+            <column name="code_article" value="435.1"/>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>
