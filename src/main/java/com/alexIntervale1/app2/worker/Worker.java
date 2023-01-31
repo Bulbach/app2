@@ -2,11 +2,11 @@ package com.alexIntervale1.app2.worker;
 
 import com.alexIntervale1.app2.dto.ResponseDto;
 import com.alexIntervale1.app2.exception.CustomAppException;
+import com.alexIntervale1.app2.jdbc.RequestJdbcRepoImpl;
+import com.alexIntervale1.app2.jdbc.ResponseJdbcRepoImpl;
 import com.alexIntervale1.app2.mapper.ResponseMapper;
 import com.alexIntervale1.app2.model.RequestMessage;
 import com.alexIntervale1.app2.model.ResponseMessage;
-import com.alexIntervale1.app2.repository.RequestRepo;
-import com.alexIntervale1.app2.repository.ResponseRepo;
 import com.google.gson.Gson;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -23,8 +23,10 @@ import javax.jms.MessageNotWriteableException;
 @Component
 public class Worker implements Runnable {
 
-    private final RequestRepo repo;
-    private final ResponseRepo responseRepo;
+//    private final RequestRepo repo;
+//    private final ResponseRepo responseRepo;
+    private final RequestJdbcRepoImpl repo;
+    private final ResponseJdbcRepoImpl responseRepo;
     private final Gson gson;
     private final ResponseMapper mapper;
     private final JmsTemplate jmsTemplate;
@@ -46,7 +48,7 @@ public class Worker implements Runnable {
             message.setProgressControl("completed");
             log.info("Сообщение воркер после чтения запроса " + message);
             findStuff(message.getPersonalNumber(), message.getCorrelationID());
-            repo.save(message);
+            repo.update(message);
         }
         Thread.sleep(1000);
     }
