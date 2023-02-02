@@ -2,8 +2,8 @@ package com.alexIntervale1.app2.worker;
 
 import com.alexIntervale1.app2.dto.ResponseDto;
 import com.alexIntervale1.app2.exception.CustomAppException;
-import com.alexIntervale1.app2.jdbc.RequestJdbcRepoImpl;
-import com.alexIntervale1.app2.jdbc.ResponseJdbcRepoImpl;
+import com.alexIntervale1.app2.jdbc.named.RequestNamedParameterJdbcImpl;
+import com.alexIntervale1.app2.jdbc.named.ResponseNamedJdbcRepoImpl;
 import com.alexIntervale1.app2.mapper.ResponseMapper;
 import com.alexIntervale1.app2.model.RequestMessage;
 import com.alexIntervale1.app2.model.ResponseMessage;
@@ -25,8 +25,10 @@ public class Worker implements Runnable {
 
 //    private final RequestRepo repo;
 //    private final ResponseRepo responseRepo;
-    private final RequestJdbcRepoImpl repo;
-    private final ResponseJdbcRepoImpl responseRepo;
+//    private final RequestJdbcRepoImpl repo;
+    private final RequestNamedParameterJdbcImpl repo;
+//    private final ResponseJdbcRepoImpl responseRepo;
+    private final ResponseNamedJdbcRepoImpl responseRepo;
     private final Gson gson;
     private final ResponseMapper mapper;
     private final JmsTemplate jmsTemplate;

@@ -2,9 +2,9 @@ package com.alexIntervale1.app2.service;
 
 import com.alexIntervale1.app2.dto.RequestDto;
 import com.alexIntervale1.app2.exception.CustomAppException;
-import com.alexIntervale1.app2.jdbc.RequestJdbcRepoImpl;
 import com.alexIntervale1.app2.mapper.RequestMapper;
 import com.alexIntervale1.app2.model.RequestMessage;
+import com.alexIntervale1.app2.jdbc.named.RequestNamedParameterJdbcImpl;
 import com.alexIntervale1.app2.worker.Worker;
 import com.google.gson.Gson;
 import lombok.Data;
@@ -24,7 +24,8 @@ import javax.jms.TextMessage;
 public class RequestService {
 
 //    private final RequestRepo repo;
-    private final RequestJdbcRepoImpl repo;
+//    private final RequestJdbcRepoImpl repo;
+    private final RequestNamedParameterJdbcImpl repo;
     private final Gson gson;
 
     private final RequestMapper requestMapper;

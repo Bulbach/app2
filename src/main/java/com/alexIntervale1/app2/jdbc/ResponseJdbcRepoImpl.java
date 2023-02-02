@@ -75,12 +75,12 @@ public class ResponseJdbcRepoImpl implements ResponseJdbcRepo {
 
 
     @Override
-    public ResponseMessage findByPersonalNumber(Long aLong) {
+    public ResponseMessage findByPersonalNumber(Long personal_number) {
         String findPersonalNumberSql = "select * from response where personal_number = ?";
-        return jdbcTemplate.queryForObject(findPersonalNumberSql, new ResponseRowMapper(), aLong);
+        return jdbcTemplate.queryForObject(findPersonalNumberSql, new ResponseRowMapper(), personal_number);
     }
 
-    class ResponseRowMapper implements RowMapper<ResponseMessage> {
+    static class ResponseRowMapper implements RowMapper<ResponseMessage> {
         ZoneId defaultZoneId = ZoneId.systemDefault();
         Date date = new Date();
         Instant instant = date.toInstant();

@@ -76,11 +76,11 @@ public class RequestJdbcRepoImpl implements RequestJdbcRepo {
     public RequestMessage findFirstByProgressControlIsLike(String str) {
         String findByProgressControl = "select * from request where progress_control = ? limit 1";
         if (countByProgressControlIsLike(str) > 0) {
-        try {
-            return jdbcTemplate.queryForObject(findByProgressControl, new RequestRowMapper(), str);
-        } catch (DataAccessException e) {
-            log.trace("expected: " + e.getMessage());
-        }
+            try {
+                return jdbcTemplate.queryForObject(findByProgressControl, new RequestRowMapper(), str);
+            } catch (DataAccessException e) {
+                log.trace("expected: " + e.getMessage());
+            }
         }
         return null;
     }
