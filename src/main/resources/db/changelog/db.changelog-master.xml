@@ -8,7 +8,7 @@
 
     <changeSet author="Alex" id="requestMessageId">
         <createTable tableName="request">
-            <column name="id" autoIncrement="true" startWith="6" type="java.lang.Long">
+            <column name="id" autoIncrement="true" startWith="1" type="java.lang.Long">
                 <constraints primaryKey="true" primaryKeyName="request_id"/>
             </column>
             <column name="personal_number" type="java.lang.Long"/>
@@ -21,10 +21,10 @@
     </changeSet>
     <changeSet id="response" author="alex">
         <createTable tableName="response">
-            <column name="id" autoIncrement="true" type="java.lang.Long">
+            <column name="id" autoIncrement="true"  startWith="6" type="java.lang.Long">
                 <constraints primaryKey="true" primaryKeyName="response_id"/>
             </column>
-            <column name="personal_number" startWith="1" type="java.lang.Long"/>
+            <column name="personal_number" type="java.lang.Long"/>
             <column name="accrual_amount" type="double"/>
             <column name="payable_amount" type="double"/>
             <column name="ordinance_number" type="java.lang.Long"/>
@@ -33,13 +33,13 @@
             <column name="correlationid" type="java.lang.String"/>
         </createTable>
         <insert tableName="response">
-                <column name="id" value="1"/>
-                <column name="personal_number" value="123456789123"/>
-                <column name="accrual_amount" value="123.45"/>
-                <column name="payable_amount" value="125.03"/>
-                <column name="ordinance_number" value="211"/>
-                <column name="date_of_the_decree" value="2020-12-09"/>
-                <column name="code_article" value="221"/>
+            <column name="id" value="1"/>
+            <column name="personal_number" value="123456789123"/>
+            <column name="accrual_amount" value="123.45"/>
+            <column name="payable_amount" value="125.03"/>
+            <column name="ordinance_number" value="211"/>
+            <column name="date_of_the_decree" value="2020-12-09"/>
+            <column name="code_article" value="221"/>
         </insert>
         <insert tableName="response">
             <column name="id" value="2"/>
