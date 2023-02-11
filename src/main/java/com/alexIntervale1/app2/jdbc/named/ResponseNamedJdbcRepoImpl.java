@@ -22,7 +22,7 @@ public class ResponseNamedJdbcRepoImpl implements ResponseNamedJdbcRepo {
     private final NamedParameterJdbcTemplate jdbcTemplate;
 
     @Override
-    public int save(ResponseMessage responseMessage) {
+    public ResponseMessage save(ResponseMessage responseMessage) {
         String saveSql = "INSERT INTO response " +
                 "(personal_number, accrual_amount, payable_amount, ordinance_number, date_of_the_decree, code_article, correlationid) " +
                 "VALUES(:personal_number, :accrual_amount, :payable_amount, :ordinance_number, :date_of_the_decree, :code_article, :correlationid)";
@@ -34,10 +34,15 @@ public class ResponseNamedJdbcRepoImpl implements ResponseNamedJdbcRepo {
                 .addValue("date_of_the_decree", responseMessage.getDateOfTheDecree())
                 .addValue("code_article", responseMessage.getCodeArticle())
                 .addValue("correlationid", responseMessage.getCorrelationID());
-        return jdbcTemplate.update(saveSql, paramSource);
+        int update = jdbcTemplate.update(saveSql, paramSource);
+        ResponseMessage responseMessageSave = null;
+        if (update == 1) {
+            responseMessageSave = findByPersonalNumber(responseMessage.getPersonalNumber());
+        }
+        return responseMessageSave;
     }
 
-    public int update(ResponseMessage responseMessage) {
+    public ResponseMessage update(ResponseMessage responseMessage) {
         String updateSql = "UPDATE response SET " +
                 "personal_number = :personal_number, accrual_amount = :accrual_amount, payable_amount = :payable_amount, " +
                 "ordinance_number = :ordinance_number, date_of_the_decree = :date_of_the_decree, code_article = :code_article" +
@@ -51,7 +56,12 @@ public class ResponseNamedJdbcRepoImpl implements ResponseNamedJdbcRepo {
                 .addValue("code_article", responseMessage.getCodeArticle())
                 .addValue("correlationid", responseMessage.getCorrelationID())
                 .addValue("id", responseMessage.getId());
-        return jdbcTemplate.update(updateSql, paramSource);
+        int update = jdbcTemplate.update(updateSql, paramSource);
+        ResponseMessage responseMessageSave = null;
+        if (update == 1) {
+            responseMessageSave = findByPersonalNumber(responseMessage.getPersonalNumber());
+        }
+        return responseMessageSave;
     }
 
     @Override
@@ -77,7 +87,7 @@ public class ResponseNamedJdbcRepoImpl implements ResponseNamedJdbcRepo {
     public ResponseMessage findByPersonalNumber(Long personal_number) {
         String findPersonalNumberSql = "select * from response where personal_number = :personal_number";
         SqlParameterSource paramSource = new MapSqlParameterSource("personal_number", personal_number);
-        return jdbcTemplate.queryForObject(findPersonalNumberSql,paramSource ,new ResponseRowMapper());
+        return jdbcTemplate.queryForObject(findPersonalNumberSql, paramSource, new ResponseRowMapper());
     }
 
     static class ResponseRowMapper implements RowMapper<ResponseMessage> {
