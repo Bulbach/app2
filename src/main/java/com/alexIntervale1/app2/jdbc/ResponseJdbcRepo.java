@@ -5,9 +5,9 @@ import com.alexIntervale1.app2.model.ResponseMessage;
 import java.util.List;
 
 public interface ResponseJdbcRepo {
-    int save(ResponseMessage responseMessage);
+    ResponseMessage save(ResponseMessage responseMessage);
 
-    int update(ResponseMessage responseMessage);
+    ResponseMessage update(ResponseMessage responseMessage);
 
     void deleteById(Long id);
 

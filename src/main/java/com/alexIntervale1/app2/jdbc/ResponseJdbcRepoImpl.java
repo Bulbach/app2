@@ -9,41 +9,42 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.Instant;
-import java.time.ZoneId;
-import java.util.Date;
 import java.util.List;
 
 @Data
 @RequiredArgsConstructor
 @Repository
-//@Primary
 public class ResponseJdbcRepoImpl implements ResponseJdbcRepo {
 
     private final JdbcTemplate jdbcTemplate;
 
     @Override
-    public int save(ResponseMessage responseMessage) {
+    public ResponseMessage save(ResponseMessage responseMessage) {
         String saveSql = "INSERT INTO response " +
                 "(personal_number, accrual_amount, payable_amount, ordinance_number, date_of_the_decree, code_article, correlationid) " +
                 "VALUES(?, ?, ?, ?, ?, ?, ?)";
-        return jdbcTemplate.update(saveSql
+        int saveVerification = jdbcTemplate.update(saveSql
                 , responseMessage.getPersonalNumber()
                 , responseMessage.getAccrualAmount()
                 , responseMessage.getPayableAmount()
                 , responseMessage.getOrdinanceNumber()
                 , responseMessage.getDateOfTheDecree()
                 , responseMessage.getCodeArticle()
-                , responseMessage.getCorrelationID()
-        );
+                , responseMessage.getCorrelationID());
+
+        ResponseMessage responseMessageSave = null;
+        if (saveVerification == 1) {
+            responseMessageSave = findByPersonalNumber(responseMessage.getPersonalNumber());
+        }
+        return responseMessageSave;
     }
 
     @Override
-    public int update(ResponseMessage responseMessage) {
+    public ResponseMessage update(ResponseMessage responseMessage) {
         String updateSql = "UPDATE response SET " +
                 "personal_number = ?, accrual_amount = ?, payable_amount = ?, ordinance_number = ?, date_of_the_decree = ?" +
                 ", code_article = ?, correlationid = ? WHERE id = ?";
-        return jdbcTemplate.update(updateSql
+        int updateVerification = jdbcTemplate.update(updateSql
                 , responseMessage.getPersonalNumber()
                 , responseMessage.getAccrualAmount()
                 , responseMessage.getPayableAmount()
@@ -51,8 +52,12 @@ public class ResponseJdbcRepoImpl implements ResponseJdbcRepo {
                 , responseMessage.getDateOfTheDecree()
                 , responseMessage.getCodeArticle()
                 , responseMessage.getCorrelationID()
-                , responseMessage.getId()
-        );
+                , responseMessage.getId());
+        ResponseMessage responseMessageSave = null;
+        if (updateVerification == 1) {
+            responseMessageSave = findByPersonalNumber(responseMessage.getPersonalNumber());
+        }
+        return responseMessageSave;
     }
 
     @Override
@@ -70,7 +75,7 @@ public class ResponseJdbcRepoImpl implements ResponseJdbcRepo {
     @Override
     public ResponseMessage findById(Long id) {
         String findIdSql = "select * from response where id = ?";
-        return jdbcTemplate.queryForObject(findIdSql, new ResponseRowMapper());
+        return jdbcTemplate.queryForObject(findIdSql, new ResponseRowMapper(),id);
     }
 
 
@@ -81,9 +86,6 @@ public class ResponseJdbcRepoImpl implements ResponseJdbcRepo {
     }
 
     static class ResponseRowMapper implements RowMapper<ResponseMessage> {
-        ZoneId defaultZoneId = ZoneId.systemDefault();
-        Date date = new Date();
-        Instant instant = date.toInstant();
         @Override
         public ResponseMessage mapRow(ResultSet rs, int rowNum) throws SQLException {
             return ResponseMessage.builder()
