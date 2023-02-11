@@ -35,8 +35,4 @@ public class ResponseMessage {
 
 
 
-    @Override
-    public int hashCode() {
-        return getClass().hashCode();
-    }
-}
+  }
