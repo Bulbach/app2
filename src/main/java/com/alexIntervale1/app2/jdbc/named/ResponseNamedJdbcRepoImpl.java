@@ -41,7 +41,7 @@ public class ResponseNamedJdbcRepoImpl implements ResponseNamedJdbcRepo {
         }
         return responseMessageSave;
     }
-
+    @Override
     public ResponseMessage update(ResponseMessage responseMessage) {
         String updateSql = "UPDATE response SET " +
                 "personal_number = :personal_number, accrual_amount = :accrual_amount, payable_amount = :payable_amount, " +
@@ -59,7 +59,7 @@ public class ResponseNamedJdbcRepoImpl implements ResponseNamedJdbcRepo {
         int update = jdbcTemplate.update(updateSql, paramSource);
         ResponseMessage responseMessageSave = null;
         if (update == 1) {
-            responseMessageSave = findByPersonalNumber(responseMessage.getPersonalNumber());
+            responseMessageSave = findById(responseMessage.getId());
         }
         return responseMessageSave;
     }

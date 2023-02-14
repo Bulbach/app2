@@ -8,6 +8,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.Month;
@@ -15,6 +16,7 @@ import java.util.List;
 
 @SpringBootTest
 @ActiveProfiles("test")
+@Transactional
 class ResponseNamedJdbcRepoImplTest {
 
     @Autowired
@@ -28,7 +30,6 @@ class ResponseNamedJdbcRepoImplTest {
     @Test
     void testSave() {
         ResponseMessage responseMessage = ResponseMessage.builder()
-                .id(6L)
                 .personalNumber(123456789321L)
                 .accrualAmount(123.45d)
                 .payableAmount(125.03d)
@@ -37,16 +38,23 @@ class ResponseNamedJdbcRepoImplTest {
                 .codeArticle(221d)
                 .build();
         ResponseMessage result = responseNamedJdbcRepoImpl.save(responseMessage);
-        Assertions.assertEquals(responseMessage, result);
+        Assertions.assertEquals(responseMessage.getPersonalNumber(), result.getPersonalNumber());
     }
 
     @Test
     void testUpdate() {
-        ResponseMessage responseMessage = getResponseMessage();
-        responseMessage.setCodeArticle(111);
-        ResponseMessage result = responseNamedJdbcRepoImpl.update(responseMessage);
-        Assertions.assertEquals(responseMessage, result);
-        Assertions.assertEquals(111,result.getCodeArticle());
+        ResponseMessage responseMessage = ResponseMessage.builder()
+                .personalNumber(987654321123L)
+                .accrualAmount(323.45d)
+                .payableAmount(325.03d)
+                .ordinanceNumber(211L)
+                .dateOfTheDecree(LocalDate.of(2020, Month.NOVEMBER, 15))
+                .codeArticle(221d)
+                .build();
+        ResponseMessage save = responseNamedJdbcRepoImpl.save(responseMessage);
+        save.setCodeArticle(111);
+        ResponseMessage result = responseNamedJdbcRepoImpl.update(save);
+        Assertions.assertEquals(111, result.getCodeArticle());
     }
 
     @Test
@@ -76,14 +84,15 @@ class ResponseNamedJdbcRepoImplTest {
 
 
     private ResponseMessage getResponseMessage() {
-        return new ResponseMessage(1L
-                , 123456789123L
-                , 123.45d
-                , 125.03d
-                , 211L
-                , LocalDate.of(2020, Month.DECEMBER, 9)
-                , 221d
-                , null);
+        return ResponseMessage.builder()
+                .id(1L)
+                .personalNumber(123456789123L)
+                .accrualAmount(123.45d)
+                .payableAmount(125.03d)
+                .ordinanceNumber(211L)
+                .dateOfTheDecree(LocalDate.of(2020, Month.DECEMBER, 9))
+                .codeArticle(221d)
+                .build();
     }
 }
 

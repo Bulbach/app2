@@ -24,7 +24,7 @@ public class RequestNamedParameterJdbcImpl implements RequestNamedJdbcRepo {
     private final NamedParameterJdbcTemplate jdbcTemplate;
 
     @Override
-    public int save(RequestMessage requestMessage) {
+    public RequestMessage save(RequestMessage requestMessage) {
         String saveSql = "INSERT INTO request (personal_number, name, surname, progress_control,correlationid)" +
                 " values (:personal_number, :name, :surname, :progress_control, :correlationid)";
         SqlParameterSource paramSource = new MapSqlParameterSource()
@@ -34,11 +34,16 @@ public class RequestNamedParameterJdbcImpl implements RequestNamedJdbcRepo {
                 .addValue("progress_control", requestMessage.getProgressControl())
                 .addValue("correlationid", requestMessage.getCorrelationID());
 
-        return jdbcTemplate.update(saveSql, paramSource);
+        int saveRequest = jdbcTemplate.update(saveSql, paramSource);
+        RequestMessage requestMessageSave = null;
+        if (saveRequest == 1) {
+            requestMessageSave = findByPersonalNumber(requestMessage.getPersonalNumber());
+        }
+        return requestMessageSave;
     }
 
     @Override
-    public int update(RequestMessage requestMessage) {
+    public RequestMessage update(RequestMessage requestMessage) {
         String updateSql = "UPDATE request SET personal_number= :personal_number, name= :name, surname= :surname, " +
                 "progress_control= :progress_control, correlationid= :correlationid WHERE id= :id";
         SqlParameterSource parameterSource = new MapSqlParameterSource()
@@ -48,7 +53,12 @@ public class RequestNamedParameterJdbcImpl implements RequestNamedJdbcRepo {
                 .addValue("progress_control", requestMessage.getProgressControl())
                 .addValue("correlationid", requestMessage.getCorrelationID())
                 .addValue("id", requestMessage.getId());
-        return jdbcTemplate.update(updateSql, parameterSource);
+        int updateRequest = jdbcTemplate.update(updateSql, parameterSource);
+        RequestMessage requestMessageUpdate = null;
+        if (updateRequest == 1) {
+            requestMessageUpdate = findById(requestMessage.getId());
+        }
+        return requestMessageUpdate;
     }
 
     @Override
@@ -90,6 +100,11 @@ public class RequestNamedParameterJdbcImpl implements RequestNamedJdbcRepo {
             }
         }
         return null;
+    }
+    public RequestMessage findByPersonalNumber(Long personal_number) {
+        String findPersonalNumberSql = "select * from request where personal_number = :personal_number";
+        SqlParameterSource paramSource = new MapSqlParameterSource("personal_number", personal_number);
+        return jdbcTemplate.queryForObject(findPersonalNumberSql, paramSource,new RequestRowMapper());
     }
 
     static class RequestRowMapper implements RowMapper<RequestMessage> {

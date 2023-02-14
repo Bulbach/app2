@@ -6,9 +6,9 @@ import java.util.List;
 
 public interface RequestNamedJdbcRepo {
 
-    int save(RequestMessage requestMessage);
+    RequestMessage save(RequestMessage requestMessage);
 
-    int update(RequestMessage requestMessage);
+    RequestMessage update(RequestMessage requestMessage);
 
     void deleteById(Long id);
 
