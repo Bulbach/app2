@@ -1,4 +1,4 @@
-package com.alexIntervale1.app2.exception;
+package com.alexIntervale1.app2.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
