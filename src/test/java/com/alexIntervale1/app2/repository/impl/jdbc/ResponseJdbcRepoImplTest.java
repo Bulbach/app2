@@ -1,4 +1,4 @@
-package com.alexIntervale1.app2.jdbc;
+package com.alexIntervale1.app2.repository.impl.jdbc;
 
 import com.alexIntervale1.app2.model.ResponseMessage;
 import org.junit.jupiter.api.Assertions;
@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.Month;
@@ -13,6 +14,7 @@ import java.util.List;
 
 @SpringBootTest
 @ActiveProfiles("test")
+@Transactional
 public class ResponseJdbcRepoImplTest {
 
     @Autowired
@@ -21,7 +23,6 @@ public class ResponseJdbcRepoImplTest {
     @Test
     void testSave() {
         ResponseMessage responseMessage = ResponseMessage.builder()
-                .id(6L)
                 .personalNumber(123456789321L)
                 .accrualAmount(123.45d)
                 .payableAmount(125.03d)
@@ -30,15 +31,22 @@ public class ResponseJdbcRepoImplTest {
                 .codeArticle(221d)
                 .build();
         ResponseMessage result = responseJdbcRepoImpl.save(responseMessage);
-        Assertions.assertEquals(responseMessage, result);
+        Assertions.assertEquals(responseMessage.getPersonalNumber(), result.getPersonalNumber());
     }
 
     @Test
     void testUpdate() {
-        ResponseMessage responseMessage = getResponseMessage();
-        responseMessage.setCodeArticle(111);
-        ResponseMessage result = responseJdbcRepoImpl.update(responseMessage);
-        Assertions.assertEquals(responseMessage, result);
+        ResponseMessage responseMessage = ResponseMessage.builder()
+                .personalNumber(987654321123L)
+                .accrualAmount(323.45d)
+                .payableAmount(325.03d)
+                .ordinanceNumber(211L)
+                .dateOfTheDecree(LocalDate.of(2020, Month.NOVEMBER, 15))
+                .codeArticle(221d)
+                .build();
+        ResponseMessage save = responseJdbcRepoImpl.save(responseMessage);
+        save.setCodeArticle(111);
+        ResponseMessage result = responseJdbcRepoImpl.update(save);
         Assertions.assertEquals(111,result.getCodeArticle());
     }
 

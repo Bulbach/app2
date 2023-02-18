@@ -1,13 +1,14 @@
-package com.alexIntervale1.app2;
+package com.alexIntervale1.app2.repository;
 
 import com.alexIntervale1.app2.model.RequestMessage;
-import com.alexIntervale1.app2.repository.RequestRepo;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest
+@Transactional
 public class RepoTest {
 
     @Autowired

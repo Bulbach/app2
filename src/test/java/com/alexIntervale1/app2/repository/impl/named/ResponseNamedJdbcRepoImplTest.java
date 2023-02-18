@@ -1,6 +1,7 @@
-package com.alexIntervale1.app2.jdbc.named;
+package com.alexIntervale1.app2.repository.impl.named;
 
 import com.alexIntervale1.app2.model.ResponseMessage;
+import com.alexIntervale1.app2.repository.impl.named.ResponseNamedJdbcRepoImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

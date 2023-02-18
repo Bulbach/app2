@@ -1,4 +1,4 @@
-package com.alexIntervale1.app2.jdbc.named;
+package com.alexIntervale1.app2.repository.impl.named;
 
 import com.alexIntervale1.app2.model.RequestMessage;
 import org.junit.jupiter.api.Assertions;
