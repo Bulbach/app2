@@ -1,4 +1,4 @@
-package com.alexIntervale1.app2.lisener;
+package com.alexIntervale1.app2.worker.lisener;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
