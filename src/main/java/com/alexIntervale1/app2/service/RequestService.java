@@ -2,10 +2,9 @@ package com.alexIntervale1.app2.service;
 
 import com.alexIntervale1.app2.dto.RequestDto;
 import com.alexIntervale1.app2.exception.CustomAppException;
-import com.alexIntervale1.app2.jdbc.named.RequestNamedParameterJdbcImpl;
 import com.alexIntervale1.app2.mapper.RequestMapper;
 import com.alexIntervale1.app2.model.RequestMessage;
-import com.alexIntervale1.app2.worker.Worker;
+import com.alexIntervale1.app2.repository.impl.named.RequestNamedParameterJdbcImpl;
 import com.google.gson.Gson;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -23,14 +22,10 @@ import javax.jms.TextMessage;
 @RequiredArgsConstructor
 public class RequestService {
 
-//    private final RequestRepo repo;
-    //    private final RequestJdbcRepoImpl repo;
     private final RequestNamedParameterJdbcImpl repo;
     private final Gson gson;
 
     private final RequestMapper requestMapper;
-
-    private final Worker worker;
 
     @JmsListener(destination = "individual.queue")
     public void receiveMessage(final Message message) throws CustomAppException {
