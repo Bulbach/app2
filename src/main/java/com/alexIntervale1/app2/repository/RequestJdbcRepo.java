@@ -1,10 +1,10 @@
-package com.alexIntervale1.app2.jdbc.named;
+package com.alexIntervale1.app2.repository;
 
 import com.alexIntervale1.app2.model.RequestMessage;
 
 import java.util.List;
 
-public interface RequestNamedJdbcRepo {
+public interface RequestJdbcRepo {
 
     RequestMessage save(RequestMessage requestMessage);
 

@@ -1,5 +1,6 @@
-package com.alexIntervale1.app2.jdbc.named;
+package com.alexIntervale1.app2.repository.impl.named;
 
+import com.alexIntervale1.app2.repository.RequestJdbcRepo;
 import com.alexIntervale1.app2.model.RequestMessage;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +20,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Repository
 @Slf4j
-public class RequestNamedParameterJdbcImpl implements RequestNamedJdbcRepo {
+public class RequestNamedParameterJdbcImpl implements RequestJdbcRepo {
 
     private final NamedParameterJdbcTemplate jdbcTemplate;
 
@@ -83,9 +84,11 @@ public class RequestNamedParameterJdbcImpl implements RequestNamedJdbcRepo {
 
     @Override
     public int countByProgressControlIsLike(String str) {
+        int resultValueOfNumberOfRecords = 0;
         String sqlCount = "select count(*) from request where progress_control = :progress_control";
         SqlParameterSource paramSource = new MapSqlParameterSource("progress_control", str);
-        return jdbcTemplate.queryForObject(sqlCount, paramSource, Integer.class);
+        resultValueOfNumberOfRecords = jdbcTemplate.queryForObject(sqlCount, paramSource, Integer.class);
+        return resultValueOfNumberOfRecords;
     }
 
     @Override
@@ -101,10 +104,11 @@ public class RequestNamedParameterJdbcImpl implements RequestNamedJdbcRepo {
         }
         return null;
     }
+
     public RequestMessage findByPersonalNumber(Long personal_number) {
         String findPersonalNumberSql = "select * from request where personal_number = :personal_number";
         SqlParameterSource paramSource = new MapSqlParameterSource("personal_number", personal_number);
-        return jdbcTemplate.queryForObject(findPersonalNumberSql, paramSource,new RequestRowMapper());
+        return jdbcTemplate.queryForObject(findPersonalNumberSql, paramSource, new RequestRowMapper());
     }
 
     static class RequestRowMapper implements RowMapper<RequestMessage> {

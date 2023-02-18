@@ -1,4 +1,4 @@
-package com.alexIntervale1.app2.jdbc;
+package com.alexIntervale1.app2.repository;
 
 import com.alexIntervale1.app2.model.ResponseMessage;
 

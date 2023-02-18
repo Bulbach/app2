@@ -1,6 +1,7 @@
-package com.alexIntervale1.app2.jdbc;
+package com.alexIntervale1.app2.repository.impl.jdbc;
 
 import com.alexIntervale1.app2.model.ResponseMessage;
+import com.alexIntervale1.app2.repository.ResponseJdbcRepo;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -55,7 +56,7 @@ public class ResponseJdbcRepoImpl implements ResponseJdbcRepo {
                 , responseMessage.getId());
         ResponseMessage responseMessageSave = null;
         if (updateVerification == 1) {
-            responseMessageSave = findByPersonalNumber(responseMessage.getPersonalNumber());
+            responseMessageSave = findById(responseMessage.getId());
         }
         return responseMessageSave;
     }

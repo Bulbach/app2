@@ -1,5 +1,6 @@
-package com.alexIntervale1.app2.jdbc.named;
+package com.alexIntervale1.app2.repository.impl.named;
 
+import com.alexIntervale1.app2.repository.ResponseJdbcRepo;
 import com.alexIntervale1.app2.model.ResponseMessage;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +19,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Repository
 @Slf4j
-public class ResponseNamedJdbcRepoImpl implements ResponseNamedJdbcRepo {
+public class ResponseNamedJdbcRepoImpl implements ResponseJdbcRepo {
     private final NamedParameterJdbcTemplate jdbcTemplate;
 
     @Override
