@@ -31,7 +31,7 @@ public class RequestService {
     public void receiveMessage(final Message message) throws CustomAppException {
 
         log.info("Received message " + message);
-        String numberRequest = getNumberRequest(message);
+        String numberRequest = getValueCorrelationIdFromMessage(message);
 
         String json = getTextFromMessage((TextMessage) message);
 
@@ -44,16 +44,15 @@ public class RequestService {
 
     }
 
-    private String getNumberRequest(Message message) throws CustomAppException {
-        String numberRequest = null;
+    private String getValueCorrelationIdFromMessage(Message message){
+        String valueCorrelationId = null;
         try {
-            numberRequest = message.getJMSCorrelationID();
+            valueCorrelationId = message.getJMSCorrelationID();
         } catch (JMSException e) {
             log.warn("Проблемы при получении порядкового номера сообщения , метод receiveMessage ", e);
-            throw new CustomAppException(e);
         }
-        log.info(numberRequest);
-        return numberRequest;
+        log.info(valueCorrelationId);
+        return valueCorrelationId;
     }
 
     private RequestMessage getRequestMessage(String numberRequest, RequestDto requestDto) {

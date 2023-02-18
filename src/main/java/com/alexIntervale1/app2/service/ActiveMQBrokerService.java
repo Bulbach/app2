@@ -8,8 +8,6 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.activemq.command.ActiveMQTextMessage;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Component;
 
@@ -25,9 +23,7 @@ public class ActiveMQBrokerService {
     private final Gson gson;
     private final ResponseMapper responseMapper;
     private final JmsTemplate broker;
-    @Autowired
-    private final Environment environment;
-    private String OUTBOUND_QUEUE_NAME ="outindividual.queue";
+    private String OUTBOUND_QUEUE_NAME = "outindividual.queue";
 
     public ActiveMQTextMessage createMessageForBrokerActiveMqQueue(ResponseMessage responseMessage) {
         ResponseDto responseDto = responseMapper.toDto(responseMessage);
