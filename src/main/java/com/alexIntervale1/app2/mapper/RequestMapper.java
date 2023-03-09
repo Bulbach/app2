@@ -11,7 +11,7 @@ public interface RequestMapper {
     RequestDto toDto(RequestMessage message);
     RequestMessage toModel(RequestDto dto);
 
-    default void updateRequestMessageFromDto(RequestDto dto,@MappingTarget RequestMessage message) {
+    default void transformationRequestMessageFromDto(RequestDto dto, @MappingTarget RequestMessage message) {
         if (dto != null) {
             message.setName(dto.getName());
             message.setSurname(dto.getSurname());

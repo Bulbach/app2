@@ -60,7 +60,7 @@ public class RequestService {
         requestMessage.setCorrelationID(numberRequest);
         log.info("Созданіе нового об'екта" + requestMessage);
 
-        requestMapper.updateRequestMessageFromDto(requestDto, requestMessage);
+        requestMapper.transformationRequestMessageFromDto(requestDto, requestMessage);
         log.info("Об'ект после конвертацыі " + requestMessage);
         return requestMessage;
     }
